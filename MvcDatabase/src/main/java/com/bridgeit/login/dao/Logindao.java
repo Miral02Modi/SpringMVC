@@ -20,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bridgeit.login.model.loginmodel;
 
-@Controller
 public class Logindao {
 
 	SessionFactory factory;
@@ -56,13 +55,9 @@ public class Logindao {
 		return list.size() != 0;
 	}
 
-	@Transactional
-	@RequestMapping(value = "/dataCheck", method = RequestMethod.POST)
-	public @ResponseBody String isDataAvailable(HttpServletRequest request, HttpServletResponse response) {
+	public  String isDataAvailable(HttpServletRequest request, HttpServletResponse response) {
 		
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationcontext.xml");
-		Logindao logindao = (Logindao) applicationContext.getBean("logindao");
-		Session session = logindao.getFactory().openSession();
+		Session session = getFactory().openSession();
 		Query query = session.createQuery("from loginmodel where user=:id");
 		query.setParameter("id", request.getParameter("email"));
 		List list = query.list();
