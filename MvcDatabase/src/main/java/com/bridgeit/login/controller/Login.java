@@ -7,6 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bridgeit.login.dao.Logindao;
@@ -15,23 +16,24 @@ import com.bridgeit.login.model.loginmodel;
 @Controller
 public class Login {
 
-	@RequestMapping("/login")
-	public String loginDataSave(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping(value="/login",method = RequestMethod.POST)
+	public ModelAndView loginDataSave(HttpServletRequest request, HttpServletResponse response) {
 
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationcontext.xml");
 		Logindao logindao = (Logindao) applicationContext.getBean("logindao");
 
 		loginmodel loginmodel = new loginmodel();
 
-		loginmodel.setPassword(request.getParameter("password"));
-		loginmodel.setUser(request.getParameter("email"));
-		
+		String user = request.getParameter("email");
+		String password = request.getParameter("password");
+		loginmodel.setPassword(password);
+		loginmodel.setUser(user);
 
-		logindao.userRegister(loginmodel);
-		logindao.checkLogin();
-		return "display.jsp";
+		//logindao.userRegister(loginmodel);
+		
+		return new ModelAndView("display.jsp", "status", logindao.ischeckLogin(user, password));
 	}
 	
 	
-	
+
 }
