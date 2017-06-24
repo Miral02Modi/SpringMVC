@@ -10,13 +10,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.bridgeit.login.model.loginmodel;
 
@@ -61,7 +54,6 @@ public class Logindao {
 		Query query = session.createQuery("from loginmodel where user=:id");
 		query.setParameter("id", request.getParameter("email"));
 		List list = query.list();
-		
 		
 		if(list.size() == 0){
 			return "0";
